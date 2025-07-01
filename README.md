@@ -1,73 +1,70 @@
-# Welcome to your Lovable project
+# Re:Answer (가칭) - 개발자 면접 시뮬레이션 챗봇
 
-## Project info
+개발자 취업 준비생을 위한 **CS 기술 면접 시뮬레이터**입니다.  
+혼자 면접 준비하기 막막할 때, 실제 면접처럼 질문 → 답변 → 꼬리 질문을 주고받으며 연습할 수 있는 서비스입니다.
 
-**URL**: https://lovable.dev/projects/f5a978e2-3257-4b9d-a49a-8b8f7ac8e4cc
+> 🟢 배포 URL: [https://mockme.vercel.app](https://cs-interview-chat.lovable.app/)
+> 🛠️ 프로젝트 상태: MVP 프로토타입  
+> 🎯 핵심 대상: 주니어 개발자 취준생  
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🎯 페르소나
 
-**Use Lovable**
+- 이름: **권재오**
+- 나이: **22세**
+- 직업: **개발자 취업 준비생**
+- 라이프스타일: 매일 기술면접과 코딩 테스트를 번갈아가며 준비하고 있음. 정보 부족과 시간 압박으로 스트레스를 받고 있음.
+- 목표: **기술 면접만큼은 효율적이고 탄탄하게 준비하고 싶다**
+- 니즈: **CS 면접 질문 시뮬레이션을 통해 말하기 연습을 하고 싶다**
+- 페인 포인트:
+  - 시간 부족으로 체계적인 준비가 어려움
+  - 어떤 질문이 나올지 몰라 막막함
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f5a978e2-3257-4b9d-a49a-8b8f7ac8e4cc) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🙋 사용자 스토리
 
-**Use your preferred IDE**
+> “취준생으로서, 저는 도서관에서 혼자 면접 시뮬레이션을 통해 면접 준비를 할 수 있습니다.  
+> 그래서 다른 면접 혹은 코딩 테스트 준비하는 시간을 확보할 수 있습니다.”
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 📌 사용자 시나리오 및 동작 흐름
 
-Follow these steps:
+1. 사용자가 웹 서비스에 접속
+2. “CS 면접 시작” 버튼 클릭
+3. 챗봇이 즉시 질문을 던짐 (예: "HTTP와 HTTPS의 차이는?")
+4. 사용자가 키보드 또는 음성으로 답변 입력
+5. 챗봇이 꼬리 질문을 추가적으로 제시 (예: "그럼 TLS는 정확히 무엇인가요?")
+6. 사용자는 반복적으로 답변하며 연습
+7. 답변 히스토리와 개선 메모 확인 가능
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## ✅ 인수 조건 (Acceptance Criteria)
 
-# Step 3: Install the necessary dependencies.
-npm i
+- **Given**: 사용자가 시뮬레이션 챗봇 페이지에 접속했을 때  
+- **When**: “CS 면접 시작” 버튼을 클릭하거나 CS 항목을 선택했을 때  
+- **Then**: 챗봇은 3초 이내에 관련 질문을 제공한다
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+---
 
-**Edit a file directly in GitHub**
+## 💡 핵심 가치 제안
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **즉각적인 면접 경험 제공**: 버튼 클릭만으로 시작되는 면접 연습
+- **혼자서도 몰입 가능한 시뮬레이션**: 꼬리 질문 반복으로 실전 감각 제공
+- **시간 효율적인 학습 방식**: 짧은 시간 안에도 몰입 가능한 연습 환경
+- **CS 항목 기반 질문 제공**: 체계적인 학습 동선 제공
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🔑 핵심 기능
 
-## What technologies are used for this project?
+- **CS 질문 시뮬레이션 챗봇**
+  - 질문 → 답변 → 꼬리 질문 흐름
+- **텍스트 & 음성 답변 입력 지원**
+- **답변 저장 및 히스토리 확인**
+- **GPT 없이도 작동 가능한 목업 챗봇 (Mock 기반 응답)**
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/f5a978e2-3257-4b9d-a49a-8b8f7ac8e4cc) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+---
