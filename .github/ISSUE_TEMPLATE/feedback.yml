@@ -1,0 +1,44 @@
+name: 사용자 피드백
+description: 사용자로부터 받은 피드백을 기록하고 개선 방향을 논의합니다.
+title: "[피드백] <간단한 요약>"
+labels: [feedback, user]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        감사합니다! 이 피드백은 서비스 개선에 큰 도움이 됩니다 💡
+
+  - type: input
+    id: feedbacker
+    attributes:
+      label: 🙋‍♂️ 피드백 작성자 (이름 or GitHub ID)
+      placeholder: 예) sooyeoniya
+    validations:
+      required: true
+
+  - type: dropdown
+    id: role
+    attributes:
+      label: 🧑 사용자 유형
+      options:
+        - 크루
+        - 일반 사용자 (테스트)
+        - 멘토 / 리뷰어
+        - 기타
+      default: 0
+
+  - type: textarea
+    id: feedback
+    attributes:
+      label: 💬 피드백 내용
+      description: 어떤 점이 좋았고, 어떤 점이 개선되었으면 좋겠는지 자유롭게 작성해주세요.
+      placeholder: 예) 글 작성 흐름은 좋았으나, 저장 버튼의 위치가 다소 혼란스러웠습니다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 🛠️ 개선 아이디어 (선택)
+      description: 생각나는 개선 아이디어가 있다면 공유해주세요!
+      placeholder: 예) 저장 버튼을 오른쪽 하단으로 이동하면 좋을 것 같아요.
