@@ -3,7 +3,7 @@
 개발자 취업 준비생을 위한 **CS 기술 면접 시뮬레이터**입니다.  
 혼자 면접 준비하기 막막할 때, 실제 면접처럼 질문 → 답변 → 꼬리 질문을 주고받으며 연습할 수 있는 서비스입니다.
 
-> 🟢 배포 URL: [https://mockme.vercel.app](https://cs-interview-chat.lovable.app/)
+> 🟢 배포 URL: [https://cs-interview-chat.lovable.app](https://cs-interview-chat.lovable.app/)
 > 🛠️ 프로젝트 상태: MVP 프로토타입  
 > 🎯 핵심 대상: 주니어 개발자 취준생  
 
