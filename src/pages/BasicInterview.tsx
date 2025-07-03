@@ -34,11 +34,11 @@ const BasicInterview = () => {
   useEffect(() => {
     let filtered = questions;
     
-    if (selectedCategory && selectedCategory !== '전체') {
+    if (selectedCategory && selectedCategory !== 'all') {
       filtered = filtered.filter(q => q.category === selectedCategory);
     }
     
-    if (selectedDifficulty) {
+    if (selectedDifficulty && selectedDifficulty !== 'all') {
       filtered = filtered.filter(q => q.difficulty === selectedDifficulty);
     }
     
