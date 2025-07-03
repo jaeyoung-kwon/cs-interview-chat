@@ -11,8 +11,8 @@ import { Question, InterviewSession, Difficulty, TokenInfo } from '@/types/inter
 import { toast } from "@/hooks/use-toast";
 
 const AIInterview = () => {
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | ''>('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty>('intermediate');
   const [sessionStarted, setSessionStarted] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState('');
   const [currentDifficulty, setCurrentDifficulty] = useState<Difficulty>('intermediate');
@@ -29,7 +29,7 @@ const AIInterview = () => {
   });
   const navigate = useNavigate();
 
-  const categories = ['전체', 'JavaScript', 'CS', 'React', '데이터베이스', '네트워크', '운영체제'];
+  const categories = ['all', 'JavaScript', 'CS', 'React', '데이터베이스', '네트워크', '운영체제'];
 
   const aiQuestions = {
     'JavaScript': {
@@ -246,8 +246,7 @@ const AIInterview = () => {
     setAnswerStartTime(new Date());
   };
 
-  const difficulties: { value: Difficulty | ''; label: string }[] = [
-    { value: '', label: '전체' },
+  const difficulties: { value: Difficulty; label: string }[] = [
     { value: 'beginner', label: '초급' },
     { value: 'intermediate', label: '중급' },
     { value: 'advanced', label: '고급' }
@@ -331,7 +330,8 @@ const AIInterview = () => {
                     <SelectValue placeholder="카테고리를 선택하세요" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories.map(category => (
+                    <SelectItem value="all">전체</SelectItem>
+                    {categories.filter(cat => cat !== 'all').map(category => (
                       <SelectItem key={category} value={category}>{category}</SelectItem>
                     ))}
                   </SelectContent>
@@ -340,7 +340,7 @@ const AIInterview = () => {
 
               <div>
                 <label className="block text-sm font-medium mb-2">난이도 선택</label>
-                <Select value={selectedDifficulty} onValueChange={(value) => setSelectedDifficulty(value as Difficulty | '')}>
+                <Select value={selectedDifficulty} onValueChange={(value) => setSelectedDifficulty(value as Difficulty)}>
                   <SelectTrigger>
                     <SelectValue placeholder="난이도를 선택하세요" />
                   </SelectTrigger>

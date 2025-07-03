@@ -17,7 +17,7 @@ const QuestionManager = () => {
     question: '', 
     category: '', 
     expectedAnswer: '', 
-    difficulty: '' as Difficulty | '',
+    difficulty: 'beginner' as Difficulty,
     keywords: ''
   });
 

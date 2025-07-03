@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,8 +12,8 @@ import { toast } from "@/hooks/use-toast";
 const BasicInterview = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | ''>('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | 'all'>('all');
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswer, setUserAnswer] = useState('');
   const [answers, setAnswers] = useState<{ questionId: string; answer: string; answerTime: number }[]>([]);
@@ -146,9 +145,9 @@ const BasicInterview = () => {
     }
   };
 
-  const categories = Array.from(new Set(['전체', ...questions.map(q => q.category)]));
-  const difficulties: { value: Difficulty | ''; label: string }[] = [
-    { value: '', label: '전체' },
+  const categories = Array.from(new Set(['all', ...questions.map(q => q.category)]));
+  const difficulties: { value: Difficulty | 'all'; label: string }[] = [
+    { value: 'all', label: '전체' },
     { value: 'beginner', label: '초급' },
     { value: 'intermediate', label: '중급' },
     { value: 'advanced', label: '고급' }
@@ -215,7 +214,8 @@ const BasicInterview = () => {
                     <SelectValue placeholder="카테고리를 선택하세요" />
                   </SelectTrigger>
                   <SelectContent>
-                    {categories.map(category => (
+                    <SelectItem value="all">전체</SelectItem>
+                    {categories.filter(cat => cat !== 'all').map(category => (
                       <SelectItem key={category} value={category}>{category}</SelectItem>
                     ))}
                   </SelectContent>
@@ -224,7 +224,7 @@ const BasicInterview = () => {
 
               <div>
                 <label className="block text-sm font-medium mb-2">난이도 선택</label>
-                <Select value={selectedDifficulty} onValueChange={(value) => setSelectedDifficulty(value as Difficulty | '')}>
+                <Select value={selectedDifficulty} onValueChange={(value) => setSelectedDifficulty(value as Difficulty | 'all')}>
                   <SelectTrigger>
                     <SelectValue placeholder="난이도를 선택하세요" />
                   </SelectTrigger>
