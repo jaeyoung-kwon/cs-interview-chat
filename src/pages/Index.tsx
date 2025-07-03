@@ -1,157 +1,214 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import ChatInterface from '@/components/ChatInterface';
-import { Brain, MessageSquare, History, Mic, Settings, Bot, User, BookOpen } from 'lucide-react';
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { BookOpen, Bot, History, Settings, Coins, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { TokenInfo } from '@/types/interview';
 
 const Index = () => {
-  const [isChatStarted, setIsChatStarted] = useState(false);
+  const [tokenInfo, setTokenInfo] = useState<TokenInfo>({
+    remaining: 10,
+    total: 10,
+    lastRefresh: new Date()
+  });
 
-  const startInterview = () => {
-    setIsChatStarted(true);
+  useEffect(() => {
+    const savedTokens = localStorage.getItem('ai-tokens');
+    if (savedTokens) {
+      const tokens = JSON.parse(savedTokens);
+      setTokenInfo(tokens);
+    } else {
+      // 초기 토큰 설정
+      const initialTokens = {
+        remaining: 10,
+        total: 10,
+        lastRefresh: new Date()
+      };
+      localStorage.setItem('ai-tokens', JSON.stringify(initialTokens));
+      setTokenInfo(initialTokens);
+    }
+  }, []);
+
+  const purchaseTokens = () => {
+    // 토큰 구매 로직 (실제로는 결제 시스템 연동 필요)
+    const newTokenInfo = {
+      ...tokenInfo,
+      remaining: tokenInfo.remaining + 20,
+      total: tokenInfo.total + 20
+    };
+    setTokenInfo(newTokenInfo);
+    localStorage.setItem('ai-tokens', JSON.stringify(newTokenInfo));
   };
 
-  if (isChatStarted) {
-    return <ChatInterface onGoBack={() => setIsChatStarted(false)} />;
-  }
+  const tokenPercentage = (tokenInfo.remaining / tokenInfo.total) * 100;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      {/* Header */}
       <header className="bg-white shadow-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4">
+        <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
-                <Brain className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">CS 면접 시뮬레이션</h1>
-                <p className="text-sm text-gray-600">혼자서도 완벽한 면접 준비</p>
-              </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Re:Answer</h1>
+              <p className="text-gray-600 mt-1">개발자 면접 시뮬레이션 플랫폼</p>
             </div>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/history" className="flex items-center gap-2">
-                  <History className="w-4 h-4" />
-                  히스토리
-                </Link>
-              </Button>
-              <Button variant="outline" size="sm" asChild>
-                <Link to="/questions" className="flex items-center gap-2">
-                  <Settings className="w-4 h-4" />
-                  질문 관리
-                </Link>
-              </Button>
-            </div>
+            
+            {/* 토큰 정보 */}
+            <Card className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200">
+              <div className="flex items-center gap-3">
+                <Coins className="w-5 h-5 text-blue-600" />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm font-medium text-gray-700">AI 토큰</span>
+                    <span className="text-sm text-gray-600">{tokenInfo.remaining}/{tokenInfo.total}</span>
+                  </div>
+                  <Progress value={tokenPercentage} className="h-2" />
+                </div>
+                {tokenInfo.remaining < 5 && (
+                  <Button 
+                    size="sm" 
+                    onClick={purchaseTokens}
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+                  >
+                    충전
+                  </Button>
+                )}
+              </div>
+              {tokenInfo.remaining < 3 && (
+                <p className="text-xs text-orange-600 mt-1">토큰이 부족합니다. 충전을 고려해보세요!</p>
+              )}
+            </Card>
           </div>
         </div>
       </header>
 
-      {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-12">
+      <main className="max-w-6xl mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            실전 같은 CS 면접 연습
+            실전 같은 면접 연습으로<br/>
+            <span className="text-blue-600">취업 성공</span>하세요
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            기본 면접과 AI 면접 두 가지 방식으로 체계적이고 효율적인 CS 면접 준비를 경험해보세요.
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            혼자서도 충분히 연습할 수 있는 면접 시뮬레이션으로<br/>
+            자신감 있게 면접에 임하세요
           </p>
         </div>
 
-        {/* 면접 시작 옵션 */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {/* 기본 면접 */}
-          <Card className="p-8 text-center hover:shadow-xl transition-all duration-200">
-            <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <User className="w-8 h-8 text-blue-600" />
+          <Card className="p-8 hover:shadow-xl transition-all duration-300 border-2 hover:border-blue-200 bg-gradient-to-br from-white to-blue-50">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-blue-100 rounded-full">
+                <BookOpen className="w-6 h-6 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">기본 면접</h3>
+                <p className="text-sm text-gray-600">맞춤형 질문으로 연습</p>
+              </div>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">기본 면접</h3>
-            <p className="text-gray-600 mb-6 leading-relaxed">
-              사용자가 직접 등록한 질문과 답변을 바탕으로 면접을 진행합니다.<br/>
-              등록된 질문을 랜덤으로 출제하여 연습할 수 있습니다.
-            </p>
-            <div className="space-y-2 text-sm text-gray-500 mb-6">
-              <p>✓ 질문과 답변을 직접 등록</p>
-              <p>✓ 카테고리별 질문 관리</p>
-              <p>✓ 등록된 답변과 비교 분석</p>
+            
+            <div className="space-y-4 mb-6">
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                <span>직접 등록한 질문과 답변을 바탕으로 면접을 진행합니다</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                <span>등록된 질문을 바탕으로 랜덤 질문을 제공합니다</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                <span>카테고리별, 난이도별 질문 관리가 가능합니다</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+                <span>텍스트 및 음성 입력을 지원합니다</span>
+              </div>
             </div>
-            <Button asChild size="lg" className="w-full">
-              <Link to="/basic-interview">기본 면접 시작하기</Link>
-            </Button>
+
+            <div className="space-y-3">
+              <Button asChild className="w-full" size="lg">
+                <Link to="/questions" className="flex items-center gap-2">
+                  <Settings className="w-4 h-4" />
+                  질문 관리하기
+                </Link>
+              </Button>
+              <Button asChild variant="outline" className="w-full" size="lg">
+                <Link to="/basic-interview" className="flex items-center gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  기본 면접 시작하기
+                </Link>
+              </Button>
+            </div>
           </Card>
 
           {/* AI 면접 */}
-          <Card className="p-8 text-center hover:shadow-xl transition-all duration-200">
-            <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Bot className="w-8 h-8 text-green-600" />
+          <Card className="p-8 hover:shadow-xl transition-all duration-300 border-2 hover:border-green-200 bg-gradient-to-br from-white to-green-50 relative overflow-hidden">
+            <div className="absolute top-4 right-4">
+              <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white">
+                <Star className="w-3 h-3 mr-1" />
+                추천
+              </Badge>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-4">AI 면접</h3>
-            <p className="text-gray-600 mb-6 leading-relaxed">
-              AI가 실시간으로 질문을 생성하고 꼬리 질문을 통해<br/>
-              실제 면접처럼 경험할 수 있습니다.
-            </p>
-            <div className="space-y-2 text-sm text-gray-500 mb-6">
-              <p>✓ AI가 자체적으로 질문 생성</p>
-              <p>✓ 실시간 꼬리 질문 제공</p>
-              <p>✓ AI 평가 및 피드백</p>
+            
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-3 bg-green-100 rounded-full">
+                <Bot className="w-6 h-6 text-green-600" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">AI 면접</h3>
+                <p className="text-sm text-gray-600">실전 같은 AI 면접관</p>
+              </div>
             </div>
-            <Button asChild size="lg" className="w-full bg-green-600 hover:bg-green-700">
-              <Link to="/ai-interview">AI 면접 시작하기</Link>
-            </Button>
+            
+            <div className="space-y-4 mb-6">
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                <span>AI가 실시간으로 질문을 생성하고 꼬리 질문을 던집니다</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                <span>실제 면접처럼 자연스러운 대화형 면접을 경험할 수 있습니다</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                <span>AI 예시 답안과 전체적인 면접 평가를 제공합니다</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-gray-600">
+                <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                <span>난이도별, 카테고리별 맞춤 질문을 제공합니다</span>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <Button 
+                asChild 
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700" 
+                size="lg"
+                disabled={tokenInfo.remaining === 0}
+              >
+                <Link to="/ai-interview" className="flex items-center gap-2">
+                  <Bot className="w-4 h-4" />
+                  AI 면접 시작하기
+                </Link>
+              </Button>
+              {tokenInfo.remaining === 0 && (
+                <p className="text-xs text-red-600 text-center">토큰을 충전해주세요</p>
+              )}
+            </div>
           </Card>
         </div>
 
-        {/* Features */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-            <MessageSquare className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-            <h3 className="font-semibold mb-2">즉각적 시작</h3>
-            <p className="text-sm text-gray-600">버튼 클릭 한 번으로 바로 면접 시작</p>
-          </Card>
-          
-          <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-            <Mic className="w-8 h-8 text-green-600 mx-auto mb-3" />
-            <h3 className="font-semibold mb-2">음성 입력</h3>
-            <p className="text-sm text-gray-600">텍스트와 음성 모두 지원</p>
-          </Card>
-          
-          <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-            <Brain className="w-8 h-8 text-purple-600 mx-auto mb-3" />
-            <h3 className="font-semibold mb-2">꼬리 질문</h3>
-            <p className="text-sm text-gray-600">실제 면접처럼 연속된 질문</p>
-          </Card>
-          
-          <Card className="p-6 text-center hover:shadow-lg transition-shadow">
-            <History className="w-8 h-8 text-orange-600 mx-auto mb-3" />
-            <h3 className="font-semibold mb-2">답변 기록</h3>
-            <p className="text-sm text-gray-600">연습 내용 저장 및 복습</p>
-          </Card>
-        </div>
-
-        {/* Legacy CS 면접 (기존 기능 유지) */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
-            기존 CS 면접 (목업 데이터)
-          </h3>
-          <p className="text-gray-600 mb-8">
-            운영체제, 네트워크, 데이터베이스, 자료구조 등 다양한 CS 질문이 준비되어 있습니다.
-          </p>
-          
-          <Button 
-            onClick={startInterview}
-            size="lg"
-            variant="outline"
-            className="px-8 py-4 text-lg font-semibold rounded-xl"
-          >
-            기존 CS 면접 시작하기
+        {/* 부가 기능 */}
+        <div className="text-center">
+          <Button asChild variant="outline" size="lg" className="mr-4">
+            <Link to="/history" className="flex items-center gap-2">
+              <History className="w-4 h-4" />
+              면접 히스토리
+            </Link>
           </Button>
-          
-          <p className="text-sm text-gray-500 mt-4">
-            💡 API 키 없이도 목업 데이터로 즉시 체험 가능
-          </p>
         </div>
       </main>
     </div>
